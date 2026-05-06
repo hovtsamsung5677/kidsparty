@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас - KidsParty</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+        }
+        
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FF6B8B;
+            text-decoration: none;
+        }
+        
+        .logo span { color: #4ECDC4; }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #2D3047;
+            font-weight: 600;
+        }
+        
+        nav a:hover { color: #FF6B8B; }
+        
+        .btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: #FF6B8B;
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #FF6B8B;
+            color: #FF6B8B;
+        }
+        
+        .about-hero {
+            background: linear-gradient(135deg, #FFE4EC 0%, #E0F7F6 100%);
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .about-hero h1 {
+            font-size: 48px;
+            color: #2D3047;
+            margin-bottom: 20px;
+        }
+        
+        .about-hero h1 span { color: #FF6B8B; }
+        
+        .about-content {
+            padding: 60px 0;
+            background: white;
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .about-text h2 {
+            font-size: 32px;
+            color: #2D3047;
+            margin-bottom: 20px;
+        }
+        
+        .about-text p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .mission {
+            background: #f8f9fa;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .mission h2 {
+            font-size: 32px;
+            color: #2D3047;
+            margin-bottom: 20px;
+        }
+        
+        .mission p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+            font-size: 18px;
+        }
+        
+        .team {
+            padding: 60px 0;
+        }
+        
+        .team h2 {
+            text-align: center;
+            font-size: 36px;
+            color: #2D3047;
+            margin-bottom: 40px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .team-card {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .team-avatar {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .team-card h3 {
+            color: #2D3047;
+            margin-bottom: 10px;
+        }
+        
+        .team-card p {
+            color: #FF6B8B;
+            font-weight: 600;
+        }
+        
+        footer {
+            background: #2D3047;
+            color: white;
+            padding: 40px 0;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-col h3 { margin-bottom: 20px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col a { color: #ccc; text-decoration: none; }
+        .footer-col a:hover { color: white; }
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .about-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="/" class="logo">🎉 Kids<span>Party</span></a>
+            <nav>
+                <ul>
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="/constructor.html">Конструктор</a></li>
+                    <li><a href="/profile.html">Мои бронирования</a></li>
+                    <li><a href="/about.html">О нас</a></li>
+                </ul>
+            </nav>
+            <div id="authButtons" class="auth-buttons">
+                <button class="btn btn-outline" onclick="window.location.href='/'">Войти</button>
+                <button class="btn btn-primary" onclick="window.location.href='/'">Регистрация</button>
+            </div>
+        </div>
+    </header>
+    
+    <section class="about-hero">
+        <div class="container">
+            <h1>О <span>KidsParty</span></h1>
+            <p>Создаём незабываемые детские праздники с 2019 года</p>
+        </div>
+    </section>
+    
+    <section class="about-content">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text">
+                    <h2>Наша история</h2>
+                    <p>KidsParty был основан в 2019 году группой энтузиастов, которые хотели сделать детские праздники доступными и качественными. Мы заметили, что родителям сложно найти хороших аниматоров и организовать всё самостоятельно.</p>
+                    <p>Сегодня KidsParty — это крупнейшая платформа по организации детских праздников в России. Мы объединяем более 100 проверенных аниматоров и предлагаем более 20 уникальных тематик.</p>
+                    <p>Наша миссия — сделать каждый детский праздник волшебным и незабываемым!</p>
+                </div>
+                <div class="about-image">
+                    <div style="background: linear-gradient(135deg, #FF6B8B, #4ECDC4); border-radius: 20px; padding: 60px; text-align: center; color: white;">
+                        <div style="font-size: 100px;">🎉</div>
+                        <h3 style="margin-top: 20px;">5 лет радости</h3>
+                        <p>Более 500 счастливых праздников</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="mission">
+        <div class="container">
+            <h2>Наша миссия</h2>
+            <p>Дарить детям радость и создавать волшебные моменты, которые они запомнят на всю жизнь. Мы верим, что каждый ребёнок заслуживает самый лучший праздник!</p>
+        </div>
+    </section>
+    
+    <section class="team">
+        <div class="container">
+            <h2>Наша команда</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">👩‍💼</div>
+                    <h3>Анна Смирнова</h3>
+                    <p>Основатель и CEO</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">🎪</div>
+                    <h3>Дмитрий Волков</h3>
+                    <p>Руководитель отдела анимации</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">🎨</div>
+                    <h3>Елена Морозова</h3>
+                    <p>Креативный директор</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">🤝</div>
+                    <h3>Михаил Петров</h3>
+                    <p>Руководитель отдела поддержки</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>🎉 KidsParty</h3>
+                    <p>Создаём незабываемые праздники для детей с 2019 года.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="/constructor.html">Конструктор праздника</a></li>
+                        <li><a href="/about.html">О нас</a></li>
+                        <li><a href="/profile.html">Личный кабинет</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Контакты</h3>
+                    <ul>
+                        <li>📞 8 (800) 123-45-67</li>
+                        <li>📧 hello@kidsparty.ru</li>
+                        <li>📍 Москва, ул. Праздничная, 15</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">© 2024 KidsParty. Все права защищены.</div>
+        </div>
+    </footer>
+    
+    <script>
+        async function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            
+            try {
+                const response = await fetch('/api/me', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                if (data.user) {
+                    const authDiv = document.getElementById('authButtons');
+                    let adminLink = '';
+                    if (data.user.role === 'admin') {
+                        adminLink = '<a href="/admin.html" style="color: #FF6B8B; margin-right: 15px;">👑 Админ-панель</a>';
+                    }
+                    authDiv.innerHTML = `
+                        ${adminLink}
+                        <span style="color: #FF6B8B; margin-right: 15px;">👋 ${data.user.name}</span>
+                        <button class="btn btn-outline" onclick="logout()">Выйти</button>
+                    `;
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+        
+        checkAuth();
+    </script>
+</body>
+</html>

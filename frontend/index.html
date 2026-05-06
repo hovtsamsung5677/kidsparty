@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KidsParty - Детские праздники</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f2f5;
+      }
+
+      header {
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .logo {
+        font-size: 28px;
+        font-weight: bold;
+        color: #ff6b8b;
+        text-decoration: none;
+      }
+
+      .logo span {
+        color: #4ecdc4;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+        gap: 25px;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: #2d3047;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+
+      nav a:hover {
+        color: #ff6b8b;
+      }
+
+      .btn {
+        padding: 10px 24px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary {
+        background: #ff6b8b;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #ff4d73;
+        transform: translateY(-2px);
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 2px solid #ff6b8b;
+        color: #ff6b8b;
+      }
+
+      .btn-outline:hover {
+        background: #ffe4ec;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #ffe4ec 0%, #e0f7f6 100%);
+        padding: 80px 0;
+        text-align: center;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        color: #2d3047;
+      }
+
+      .hero h1 span {
+        color: #ff6b8b;
+      }
+
+      .hero p {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 30px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .btn-large {
+        padding: 15px 35px;
+        font-size: 18px;
+      }
+
+      .features {
+        padding: 60px 0;
+        background: white;
+      }
+
+      .features h2 {
+        text-align: center;
+        font-size: 36px;
+        color: #2d3047;
+        margin-bottom: 40px;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+      }
+
+      .feature-card {
+        text-align: center;
+        padding: 30px;
+        background: #f8f9fa;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
+
+      .feature-card h3 {
+        margin-bottom: 15px;
+        color: #2d3047;
+      }
+
+      .stats {
+        background: linear-gradient(135deg, #ff6b8b 0%, #4ecdc4 100%);
+        color: white;
+        padding: 60px 0;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .reviews {
+        padding: 60px 0;
+        background: #f8f9fa;
+      }
+
+      .reviews h2 {
+        text-align: center;
+        font-size: 36px;
+        color: #2d3047;
+        margin-bottom: 40px;
+      }
+
+      .reviews-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .review-card {
+        background: white;
+        padding: 25px;
+        border-radius: 16px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .review-text {
+        font-style: italic;
+        margin-bottom: 15px;
+        color: #555;
+      }
+
+      .review-author {
+        font-weight: bold;
+        color: #ff6b8b;
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .modal {
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        width: 400px;
+        max-width: 90%;
+        position: relative;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .modal-header h2 {
+        color: #2d3047;
+      }
+
+      .close-modal {
+        background: none;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+        color: #999;
+      }
+
+      .auth-input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+
+      .user-name {
+        color: #ff6b8b;
+        font-weight: 600;
+        margin-right: 15px;
+      }
+
+      footer {
+        background: #2d3047;
+        color: white;
+        padding: 40px 0;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+      }
+
+      .footer-col h3 {
+        margin-bottom: 20px;
+      }
+
+      .footer-col ul {
+        list-style: none;
+      }
+
+      .footer-col ul li {
+        margin-bottom: 10px;
+      }
+
+      .footer-col a {
+        color: #ccc;
+        text-decoration: none;
+      }
+
+      .footer-col a:hover {
+        color: white;
+      }
+
+      .copyright {
+        text-align: center;
+        padding-top: 30px;
+        margin-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        z-index: 1000;
+        animation: slideIn 0.3s ease;
+      }
+
+      .notification.success {
+        background: #4ecdc4;
+      }
+      .notification.error {
+        background: #ff6b8b;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header-container {
+          flex-direction: column;
+        }
+        nav ul {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container header-container">
+        <a href="/" class="logo">🎉 Kids<span>Party</span></a>
+        <nav>
+          <ul>
+            <li><a href="/">Главная</a></li>
+            <li><a href="/constructor.html">Конструктор</a></li>
+            <li><a href="/profile.html">Мои бронирования</a></li>
+            <li><a href="/about.html">О нас</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <button class="btn btn-outline" onclick="showAuthModal(); showLoginForm()">
+            Войти
+          </button>
+          <button
+            class="btn btn-primary"
+            onclick="
+              showAuthModal();
+              showRegisterForm();
+            "
+          >
+            Регистрация
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <h1>
+          Создайте <span>идеальный праздник</span><br />для вашего ребенка
+        </h1>
+        <p>
+          Выберите аниматоров, тематику и дополнительные услуги в нашем
+          конструкторе. Более 1000 счастливых семей уже выбрали нас!
+        </p>
+        <button
+          class="btn btn-primary btn-large"
+          onclick="window.location.href = '/constructor.html'"
+        >
+          🎈 Создать праздник
+        </button>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="container">
+        <h2>Почему выбирают нас</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🎪</div>
+            <h3>100+ аниматоров</h3>
+            <p>Проверенные профессионалы с опытом работы от 3 лет</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3>20+ тематик</h3>
+            <p>На любой вкус и возраст ребенка</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Безопасная оплата</h3>
+            <p>Деньги заморожены до проведения праздника</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⭐</div>
+            <h3>Гарантия качества</h3>
+            <p>Возврат средств, если праздник не понравится</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="container">
+        <div class="stats-grid">
+          <div>
+            <div class="stat-number">1000+</div>
+            <div>Счастливых детей</div>
+          </div>
+          <div>
+            <div class="stat-number">500+</div>
+            <div>Проведённых праздников</div>
+          </div>
+          <div>
+            <div class="stat-number">50+</div>
+            <div>Городов России</div>
+          </div>
+          <div>
+            <div class="stat-number">99%</div>
+            <div>Положительных отзывов</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reviews">
+      <div class="container">
+        <h2>Что говорят родители</h2>
+        <div class="reviews-grid">
+          <div class="review-card">
+            <div class="review-text">
+              "Спасибо огромное за праздник! Ребёнок был в восторге, аниматоры
+              просто супер!"
+            </div>
+            <div class="review-author">— Анна, мама Данила</div>
+          </div>
+          <div class="review-card">
+            <div class="review-text">
+              "Очень удобный сервис, всё быстро и понятно. Обязательно обратимся
+              ещё!"
+            </div>
+            <div class="review-author">— Михаил, папа Софии</div>
+          </div>
+          <div class="review-card">
+            <div class="review-text">
+              "Отличная организация, все пожелания учли. Дети до сих пор
+              вспоминают праздник!"
+            </div>
+            <div class="review-author">— Елена, мама Артёма</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h3>🎉 KidsParty</h3>
+            <p>Создаём незабываемые праздники для детей с 2019 года.</p>
+          </div>
+          <div class="footer-col">
+            <h3>Быстрые ссылки</h3>
+            <ul>
+              <li><a href="/constructor.html">Конструктор праздника</a></li>
+              <li><a href="/about.html">О нас</a></li>
+              <li><a href="/profile.html">Личный кабинет</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3>Контакты</h3>
+            <ul>
+              <li>📞 8 (800) 123-45-67</li>
+              <li>📧 hello@kidsparty.ru</li>
+              <li>📍 Москва, ул. Праздничная, 15</li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3>Мы в соцсетях</h3>
+            <ul>
+              <li><a href="#">📱 Instagram</a></li>
+              <li><a href="#">💬 Telegram</a></li>
+              <li><a href="#">📘 ВКонтакте</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="copyright">© 2024 KidsParty. Все права защищены.</div>
+      </div>
+    </footer>
+
+    <!-- Модальное окно -->
+    <div id="authModal" class="modal-overlay">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 id="authTitle">Вход</h2>
+          <button class="close-modal" onclick="closeAuthModal()">
+            &times;
+          </button>
+        </div>
+
+        <div id="loginForm">
+          <input
+            type="email"
+            id="loginEmail"
+            placeholder="Email"
+            class="auth-input"
+          />
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="Пароль"
+            class="auth-input"
+          />
+          <button
+            class="btn btn-primary"
+            onclick="login()"
+            style="width: 100%; margin-top: 20px"
+          >
+            Войти
+          </button>
+          <p style="text-align: center; margin-top: 20px">
+            Нет аккаунта?
+            <a href="#" onclick="showRegisterForm()">Зарегистрироваться</a>
+          </p>
+        </div>
+
+        <div id="registerForm" style="display: none">
+          <input
+            type="text"
+            id="regName"
+            placeholder="Ваше имя"
+            class="auth-input"
+          />
+          <input
+            type="email"
+            id="regEmail"
+            placeholder="Email"
+            class="auth-input"
+          />
+          <input
+            type="tel"
+            id="regPhone"
+            placeholder="Телефон"
+            class="auth-input"
+          />
+          <input
+            type="password"
+            id="regPassword"
+            placeholder="Пароль (минимум 6 символов)"
+            class="auth-input"
+          />
+          <button
+            class="btn btn-primary"
+            onclick="register()"
+            style="width: 100%; margin-top: 20px"
+          >
+            Зарегистрироваться
+          </button>
+          <p style="text-align: center; margin-top: 20px">
+            Уже есть аккаунт? <a href="#" onclick="showLoginForm()">Войти</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentUser = null;
+
+      function showNotification(message, isSuccess = true) {
+        const notification = document.createElement("div");
+        notification.className = `notification ${isSuccess ? "success" : "error"}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+      }
+
+      function showAuthModal() {
+        document.getElementById("authModal").style.display = "flex";
+      }
+
+      function closeAuthModal() {
+        document.getElementById("authModal").style.display = "none";
+      }
+
+      function showLoginForm() {
+        document.getElementById("loginForm").style.display = "block";
+        document.getElementById("registerForm").style.display = "none";
+        document.getElementById("authTitle").textContent = "Вход";
+      }
+
+      function showRegisterForm() {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("registerForm").style.display = "block";
+        document.getElementById("authTitle").textContent = "Регистрация";
+      }
+
+      async function register() {
+        const name = document.getElementById("regName").value;
+        const email = document.getElementById("regEmail").value;
+        const phone = document.getElementById("regPhone").value;
+        const password = document.getElementById("regPassword").value;
+
+        if (!email || !password) {
+          showNotification("Заполните email и пароль!", false);
+          return;
+        }
+
+        if (password.length < 6) {
+          showNotification("Пароль должен быть минимум 6 символов!", false);
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, phone, password }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            localStorage.setItem("token", data.token);
+            currentUser = data.user;
+            updateUI();
+            closeAuthModal();
+            showNotification("🎉 " + data.message, true);
+
+            document.getElementById("regName").value = "";
+            document.getElementById("regEmail").value = "";
+            document.getElementById("regPhone").value = "";
+            document.getElementById("regPassword").value = "";
+          } else {
+            showNotification(data.error || "Ошибка регистрации", false);
+          }
+        } catch (error) {
+          showNotification("Ошибка соединения с сервером", false);
+        }
+      }
+
+      async function login() {
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        if (!email || !password) {
+          showNotification("Заполните email и пароль!", false);
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            localStorage.setItem("token", data.token);
+            currentUser = data.user;
+            updateUI();
+            closeAuthModal();
+            showNotification("👋 " + data.message, true);
+
+            document.getElementById("loginEmail").value = "";
+            document.getElementById("loginPassword").value = "";
+          } else {
+            showNotification(data.error || "Ошибка входа", false);
+          }
+        } catch (error) {
+          showNotification("Ошибка соединения с сервером", false);
+        }
+      }
+
+      function logout() {
+        localStorage.removeItem("token");
+        currentUser = null;
+        updateUI();
+        showNotification("👋 Вы вышли из аккаунта", true);
+      }
+
+      function updateUI() {
+        const authButtons = document.querySelector(".auth-buttons");
+
+        if (currentUser) {
+          let adminLink = "";
+          if (currentUser.role === "admin") {
+            adminLink =
+              '<a href="/admin.html" style="color: #FF6B8B; margin-right: 15px;">👑 Админ-панель</a>';
+          }
+          authButtons.innerHTML = `
+                    ${adminLink}
+                    <span class="user-name">👋 ${currentUser.name || currentUser.email}</span>
+                    <button class="btn btn-outline" onclick="logout()">Выйти</button>
+                `;
+        } else {
+                authButtons.innerHTML = `
+                    <button class="btn btn-outline" onclick="showAuthModal(); showLoginForm()">Войти</button>
+                    <button class="btn btn-primary" onclick="showAuthModal(); showRegisterForm()">Регистрация</button>
+                `;
+        }
+      }
+
+      async function checkAuth() {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        try {
+          const response = await fetch("/api/me", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await response.json();
+          if (data.user) {
+            currentUser = data.user;
+            updateUI();
+          } else {
+            localStorage.removeItem("token");
+          }
+        } catch (error) {
+          console.error("Ошибка проверки токена:", error);
+          localStorage.removeItem("token");
+        }
+      }
+
+      checkAuth();
+    </script>
+  </body>
+</html>

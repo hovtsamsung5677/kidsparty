@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель KidsParty</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f2f5;
+        }
+        
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 260px;
+            background: #2D3047;
+            color: white;
+            padding: 20px;
+        }
+        
+        .sidebar h2 {
+            margin-bottom: 30px;
+            color: #FF6B8B;
+        }
+        
+        .sidebar nav a {
+            display: block;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar nav a:hover, .sidebar nav a.active {
+            background: #FF6B8B;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: #FF6B8B;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background: #f5f5f5;
+        }
+        
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .notification.success { background: #4ECDC4; }
+        .notification.error { background: #FF6B8B; }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="sidebar">
+            <h2>🎉 KidsParty Admin</h2>
+            <nav>
+                <a href="#" onclick="showSection('themes')" class="active">📁 Тематики</a>
+                <a href="#" onclick="showSection('animators')">🎭 Аниматоры</a>
+                <a href="#" onclick="showSection('extras')">✨ Доп. услуги</a>
+                <a href="#" onclick="showSection('orders')">📦 Заказы</a>
+                <a href="/" style="margin-top: 50px;">🔙 На сайт</a>
+            </nav>
+        </div>
+        
+        <div class="main-content">
+            <div class="header">
+                <h1 id="sectionTitle">Управление тематиками</h1>
+                <div>
+                    <span id="adminName"></span>
+                    <button class="btn btn-danger" onclick="logout()" style="margin-left: 15px;">Выйти</button>
+                </div>
+            </div>
+            
+            <!-- Секция тематик -->
+            <div id="themesSection" class="card">
+                <h3>Добавить тематику</h3>
+                <div class="form-group">
+                    <label>Название (англ):</label>
+                    <input type="text" id="themeName" placeholder="superheroes">
+                </div>
+                <div class="form-group">
+                    <label>Название (рус):</label>
+                    <input type="text" id="themeNameRu" placeholder="Супергерои">
+                </div>
+                <div class="form-group">
+                    <label>Иконка (эмодзи):</label>
+                    <input type="text" id="themeIcon" placeholder="🦸">
+                </div>
+                <div class="form-group">
+                    <label>Описание:</label>
+                    <textarea id="themeDesc" rows="2" placeholder="Описание тематики"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Цена от (₽):</label>
+                    <input type="number" id="themePrice" placeholder="5000">
+                </div>
+                <button class="btn btn-primary" onclick="addTheme()">➕ Добавить тематику</button>
+                
+                <h3 style="margin-top: 30px;">Список тематик</h3>
+                <div id="themesList"></div>
+            </div>
+            
+            <!-- Секция аниматоров (скрыта по умолчанию) -->
+            <div id="animatorsSection" style="display: none;">
+                <div class="card">
+                    <h3>Добавить аниматора</h3>
+                    <div class="form-group">
+                        <label>Название (англ):</label>
+                        <input type="text" id="animatorName" placeholder="clown">
+                    </div>
+                    <div class="form-group">
+                        <label>Название (рус):</label>
+                        <input type="text" id="animatorNameRu" placeholder="Клоун">
+                    </div>
+                    <div class="form-group">
+                        <label>Иконка:</label>
+                        <input type="text" id="animatorIcon" placeholder="🤡">
+                    </div>
+                    <div class="form-group">
+                        <label>Описание:</label>
+                        <textarea id="animatorDesc" rows="2" placeholder="Описание"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Цена за час (₽):</label>
+                        <input type="number" id="animatorPrice" placeholder="3000">
+                    </div>
+                    <button class="btn btn-primary" onclick="addAnimator()">➕ Добавить аниматора</button>
+                </div>
+                <div class="card">
+                    <h3>Список аниматоров</h3>
+                    <div id="animatorsList"></div>
+                </div>
+            </div>
+            
+            <!-- Секция доп. услуг (скрыта по умолчанию) -->
+            <div id="extrasSection" style="display: none;">
+                <div class="card">
+                    <h3>Добавить услугу</h3>
+                    <div class="form-group">
+                        <label>Название (англ):</label>
+                        <input type="text" id="extraName" placeholder="bubbles">
+                    </div>
+                    <div class="form-group">
+                        <label>Название (рус):</label>
+                        <input type="text" id="extraNameRu" placeholder="Шоу мыльных пузырей">
+                    </div>
+                    <div class="form-group">
+                        <label>Иконка:</label>
+                        <input type="text" id="extraIcon" placeholder="🌀">
+                    </div>
+                    <div class="form-group">
+                        <label>Описание:</label>
+                        <textarea id="extraDesc" rows="2" placeholder="Описание"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Цена (₽):</label>
+                        <input type="number" id="extraPrice" placeholder="2000">
+                    </div>
+                    <button class="btn btn-primary" onclick="addExtra()">➕ Добавить услугу</button>
+                </div>
+                <div class="card">
+                    <h3>Список услуг</h3>
+                    <div id="extrasList"></div>
+                </div>
+            </div>
+            
+            <!-- Секция заказов -->
+            <div id="ordersSection" style="display: none;">
+                <div class="card">
+                    <h3>Все заказы</h3>
+                    <div id="ordersList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentUser = null;
+        
+        function showNotification(message, isSuccess = true) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${isSuccess ? 'success' : 'error'}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+        
+        function showSection(section) {
+            document.getElementById('themesSection').style.display = section === 'themes' ? 'block' : 'none';
+            document.getElementById('animatorsSection').style.display = section === 'animators' ? 'block' : 'none';
+            document.getElementById('extrasSection').style.display = section === 'extras' ? 'block' : 'none';
+            document.getElementById('ordersSection').style.display = section === 'orders' ? 'block' : 'none';
+            
+            const titles = {
+                themes: 'Управление тематиками',
+                animators: 'Управление аниматорами',
+                extras: 'Управление дополнительными услугами',
+                orders: 'Управление заказами'
+            };
+            document.getElementById('sectionTitle').textContent = titles[section];
+            
+            if (section === 'themes') loadThemes();
+            if (section === 'animators') loadAnimators();
+            if (section === 'extras') loadExtras();
+            if (section === 'orders') loadOrders();
+        }
+        
+        async function loadThemes() {
+            const token = localStorage.getItem('token');
+            const response = await fetch('/api/admin/themes', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            if (data.success) {
+                const html = `
+                    <table>
+                        <thead><tr><th>ID</th><th>Название</th><th>Иконка</th><th>Цена</th><th>Действие</th></tr></thead>
+                        <tbody>
+                            ${data.themes.map(theme => `
+                                <tr>
+                                    <td>${theme.id}</td>
+                                    <td>${theme.name_ru}</td>
+                                    <td>${theme.icon}</td>
+                                    <td>${theme.price_min} ₽</td>
+                                    <td><button class="delete-btn" onclick="deleteTheme(${theme.id})">Удалить</button></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+                document.getElementById('themesList').innerHTML = html;
+            }
+        }
+        
+        async function addTheme() {
+            const data = {
+                name: document.getElementById('themeName').value,
+                name_ru: document.getElementById('themeNameRu').value,
+                icon: document.getElementById('themeIcon').value,
+                description: document.getElementById('themeDesc').value,
+                price_min: parseInt(document.getElementById('themePrice').value) || 5000
+            };
+            
+            const token = localStorage.getItem('token');
+            const response = await fetch('/api/admin/themes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (response.ok) {
+                showNotification('Тематика добавлена!', true);
+                loadThemes();
+                document.getElementById('themeName').value = '';
+                document.getElementById('themeNameRu').value = '';
+                document.getElementById('themeIcon').value = '';
+                document.getElementById('themeDesc').value = '';
+                document.getElementById('themePrice').value = '';
+            } else {
+                showNotification('Ошибка добавления', false);
+            }
+        }
+        
+        async function deleteTheme(id) {
+            if (confirm('Удалить тематику?')) {
+                const token = localStorage.getItem('token');
+                await fetch(`/api/admin/themes/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                showNotification('Тематика удалена', true);
+                loadThemes();
+            }
+        }
+        
+        async function loadAnimators() {
+            const token = localStorage.getItem('token');
+            const response = await fetch('/api/admin/animators', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            if (data.success) {
+                const html = `
+                    <table>
+                        <thead><tr><th>ID</th><th>Название</th><th>Иконка</th><th>Цена/час</th></tr></thead>
+                        <tbody>
+                            ${data.animators.map(a => `
+                                <tr><td>${a.id}</td><td>${a.name_ru}</td><td>${a.icon}</td><td>${a.price_per_hour} ₽</td></tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+                document.getElementById('animatorsList').innerHTML = html;
+            }
+        }
+        
+        async function addAnimator() {
+            const data = {
+                name: document.getElementById('animatorName').value,
+                name_ru: document.getElementById('animatorNameRu').value,
+                icon: document.getElementById('animatorIcon').value,
+                description: document.getElementById('animatorDesc').value,
+                price_per_hour: parseInt(document.getElementById('animatorPrice').value) || 3000
+            };
+            
+            const token = localStorage.getItem('token');
+            const response = await fetch('/api/admin/animators', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (response.ok) {
+                showNotification('Аниматор добавлен!', true);
+                loadAnimators();
+            } else {
+                showNotification('Ошибка добавления', false);
+            }
+        }
+        
+        async function loadExtras() {
+            const token = localStorage.getItem('token');
+            const response = await fetch('/api/admin/extras', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            if (data.success) {
+                const html = `
+                    <table>
+                        <thead><tr><th>ID</th><th>Название</th><th>Иконка</th><th>Цена</th></tr></thead>
+                        <tbody>
+                            ${data.extras.map(e => `
+                                <tr><td>${e.id}</td><td>${e.name_ru}</td><td>${e.icon}</td><td>${e.price} ₽</td></tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+                document.getElementById('extrasList').innerHTML = html;
+            }
+        }
+        
+        async function addExtra() {
+            const data = {
+                name: document.getElementById('extraName').value,
+                name_ru: document.getElementById('extraNameRu').value,
+                icon: document.getElementById('extraIcon').value,
+                description: document.getElementById('extraDesc').value,
+                price: parseInt(document.getElementById('extraPrice').value) || 1000
+            };
+            
+            const token = localStorage.getItem('token');
+            const response = await fetch('/api/admin/extras', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (response.ok) {
+                showNotification('Услуга добавлена!', true);
+                loadExtras();
+            } else {
+                showNotification('Ошибка добавления', false);
+            }
+        }
+        
+       async function loadOrders() {
+    const token = localStorage.getItem('token');
+    const response = await fetch('/api/bookings/all', {
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    if (data.success && data.bookings) {
+        const statusColors = {
+            pending: '🟡 В обработке',
+            confirmed: '🟢 Подтверждён',
+            completed: '🔵 Завершён',
+            cancelled: '🔴 Отменён'
+        };
+        
+        const html = `
+            <table style="width:100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #f5f5f5;">
+                        <th style="padding: 12px; text-align: left;">ID</th>
+                        <th style="padding: 12px; text-align: left;">Клиент</th>
+                        <th style="padding: 12px; text-align: left;">Дата</th>
+                        <th style="padding: 12px; text-align: left;">Время</th>
+                        <th style="padding: 12px; text-align: left;">Тематика</th>
+                        <th style="padding: 12px; text-align: left;">Аниматор</th>
+                        <th style="padding: 12px; text-align: left;">Сумма</th>
+                        <th style="padding: 12px; text-align: left;">Статус</th>
+                        <th style="padding: 12px; text-align: left;">Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${data.bookings.map(b => `
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 12px;">${b.id}</td>
+                            <td style="padding: 12px;">
+                                ${b.user_name || b.user_email}<br>
+                                <small>${b.user_phone || ''}</small>
+                            </td>
+                            <td style="padding: 12px;">${b.event_date}</td>
+                            <td style="padding: 12px;">${b.event_time}</td>
+                            <td style="padding: 12px;">${b.theme_name || '-'}</td>
+                            <td style="padding: 12px;">${b.animator_name || '-'}</td>
+                            <td style="padding: 12px;">${(b.total_price || 0).toLocaleString()} ₽</td>
+                            <td style="padding: 12px;">
+                                <select onchange="updateStatus(${b.id}, this.value)" style="padding: 5px; border-radius: 4px;">
+                                    <option value="pending" ${b.status === 'pending' ? 'selected' : ''}>В обработке</option>
+                                    <option value="confirmed" ${b.status === 'confirmed' ? 'selected' : ''}>Подтверждён</option>
+                                    <option value="completed" ${b.status === 'completed' ? 'selected' : ''}>Завершён</option>
+                                    <option value="cancelled" ${b.status === 'cancelled' ? 'selected' : ''}>Отменён</option>
+                                </select>
+                            </td>
+                            <td style="padding: 12px;">
+                                <button class="delete-btn" onclick="cancelBooking(${b.id})">Отменить</button>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+        document.getElementById('ordersList').innerHTML = html;
+    }
+}
+
+async function updateStatus(id, status) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`/api/bookings/${id}/status`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status })
+    });
+    if (response.ok) {
+        showNotification('Статус обновлён', true);
+        loadOrders();
+    }
+}
+
+async function cancelBooking(id) {
+    if (confirm('Отменить бронирование?')) {
+        const token = localStorage.getItem('token');
+        await fetch(`/api/bookings/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        showNotification('Бронирование отменено', true);
+        loadOrders();
+    }
+}
+
+async function updateStatus(id, status) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`/api/bookings/${id}/status`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status })
+    });
+    if (response.ok) {
+        showNotification('Статус обновлён', true);
+        loadOrders();
+    }
+}
+
+async function cancelBooking(id) {
+    if (confirm('Отменить бронирование?')) {
+        const token = localStorage.getItem('token');
+        await fetch(`/api/bookings/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        showNotification('Бронирование отменено', true);
+        loadOrders();
+    }
+}
+        
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+        
+        checkAdmin();
+    </script>
+</body>
+</html>
